@@ -8,8 +8,6 @@ create table airports
   localization point
 );
 
-alter table airports
-  owner to witek;
 
 create unique index airports_id_uindex
   on airports (id);
