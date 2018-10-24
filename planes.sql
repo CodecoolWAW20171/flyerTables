@@ -7,12 +7,10 @@ create table planes
   passengers_capacity integer,
   aircrew             integer,
   captain_id          integer
+    constraint planes___fk
+    references captains
 );
 
-alter table planes
-  owner to witek;
 
 create unique index planes_id_uindex
   on planes (id);
-
-
