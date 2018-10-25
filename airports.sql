@@ -1,15 +1,18 @@
 create table airports
 (
-  id           serial  not null
+  airportid bigserial        not null
     constraint airports_pkey
     primary key,
-  name         varchar not null,
-  country      varchar not null,
-  localization point
+  city      varchar,
+  country   varchar,
+  longitude double precision not null,
+  latitude  double precision not null
 );
 
+alter table airports
+  owner to witek;
 
-create unique index airports_id_uindex
-  on airports (id);
+create unique index airports_airportid_uindex
+  on airports (airportid);
 
 
