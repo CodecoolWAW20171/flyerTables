@@ -1,3 +1,5 @@
+CREATE TYPE role AS ENUM ('user', 'manager');
+
 create table if not exists users
 (
 	user_id bigserial not null
@@ -10,8 +12,8 @@ create table if not exists users
 	phone_number bigint,
 	country varchar,
 	city varchar,
-	adress varchar
---   role,
+	adress varchar,
+  role role
 )
 ;
 create unique index if not exists customers_customer_id_uindex
