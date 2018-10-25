@@ -1,6 +1,6 @@
-create table if not exists customers
+create table if not exists users
 (
-	customer_id bigserial not null
+	user_id bigserial not null
 		constraint customers_pkey
 			primary key,
 	first_name varchar,
@@ -11,10 +11,11 @@ create table if not exists customers
 	country varchar,
 	city varchar,
 	adress varchar
+--   role,
 )
 ;
 create unique index if not exists customers_customer_id_uindex
-	on customers (customer_id)
+	on users (user_id)
 ;
 
 create table if not exists crew
@@ -83,7 +84,7 @@ create table if not exists seats
 			primary key,
 	seat_number varchar,
 	plane_id bigint
-		constraint planes_plane_id
+		constraint planes_planeid_fk
 			references planes (plane_id),
 	standard varchar
 )
@@ -122,7 +123,7 @@ create table if not exists flights
 	plane_id bigint not null,
 	price money,
 	captain_id bigint
-		constraint crew_employee_id
+		constraint crew_employeeid_fk
 			references crew (employee_id),
 	startdate timestamp not null,
 	enddate timestamp not null
@@ -159,7 +160,9 @@ create table if not exists tickets
 	seat_id bigint not null
 		constraint tickets_seats__fk
 			references seats (seat_id),
-	customer_id bigint not null,
+	user_id bigint not null
+    constraint users_userid_fk
+      references users (user_id),
 	passenger_id bigint not null
 		constraint tickets_passengers__fk
 			references passengers (passenger_id),
