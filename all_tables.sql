@@ -98,10 +98,10 @@ create table if not exists constant_relation
 		constraint constantrelation_pkey
 			primary key,
 	from_airport varchar not null
-		constraint constant_relation_airports_from__fk
+		constraint constantrelation_airports_from__fk
 			references airports (airport_id),
 	destination_airport varchar not null
-		constraint constant_relation_dest___fk
+		constraint constantrelation_dest___fk
 			references airports (airport_id),
 	base_price money,
 	distance integer
