@@ -13,6 +13,8 @@ create table constant_relation
   distance            integer
 );
 
+
+
 create unique index constantrelation_relationid_uindex
   on constant_relation (relation_id);
 

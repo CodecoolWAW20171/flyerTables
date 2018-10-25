@@ -13,7 +13,6 @@ create table flights
   enddate     timestamp not null
 );
 
-
 create unique index flights_flight_id_uindex
   on flights (flight_id);
 

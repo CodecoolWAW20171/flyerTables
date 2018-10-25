@@ -12,3 +12,5 @@ create table airports
 
 create unique index airports_airportid_uindex
   on airports (airport_id);
+
+

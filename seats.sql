@@ -8,9 +8,6 @@ create table seats
   standard    varchar
 );
 
-alter table seats
-  owner to witek;
-
 create unique index seats_seat_id_uindex
   on seats (seat_id);
 
