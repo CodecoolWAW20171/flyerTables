@@ -7,7 +7,7 @@ create table if not exists users
 			primary key,
 	first_name varchar,
 	last_name varchar not null,
-	password varchar(16) not null,
+	password varchar(255) not null,
 	email varchar(32) not null,
 	phone_number bigint,
 	country varchar,
@@ -150,6 +150,7 @@ create table if not exists flight_seats
 			references flights (flight_id)
 )
 ;
+CREATE INDEX flightid_index ON flight_seats (flight_id);
 
 create table if not exists tickets
 (
