@@ -71,8 +71,8 @@ create table if not exists airports
 			primary key,
 	city varchar,
 	country varchar,
-	longitude double precision not null,
-	latitude double precision not null
+	latitude double precision not null,
+	longitude double precision not null
 )
 ;
 create unique index if not exists airports_airportid_uindex
