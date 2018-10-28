@@ -1,4 +1,4 @@
-DELETE FROM constant_relation;
+-- DELETE FROM constant_relation;
 
 
 CREATE OR REPLACE FUNCTION calculate_base_price() RETURNS TRIGGER AS $$
