@@ -43,7 +43,7 @@ def fulfill_db(cursor, file_name, db_table_name, column_numbers_to_delete_from_c
 
 
 
-fulfill_db("/home/mariusz/PycharmProjects/flyerTables/csv_files/passengers.csv",
-           "passengers",
-           [0, 3, 6, 7, 8, 9],
-           ("firstname", "lastname", "email", "phone_number"))
+fulfill_db("/home/mariusz/PycharmProjects/flyerTables/csv_files/constant_relation.csv",
+           "constant_relation",
+           [0, 3],
+           ("from_airport", "destination_airport", "distance"))
