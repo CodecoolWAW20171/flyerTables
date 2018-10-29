@@ -23,27 +23,38 @@ def csv_to_list_of_tuples(file_name, elem_to_del=[], split_char=","):  #[]- inde
 @db_connection.connection_handler
 def fulfill_db(cursor, file_name, db_table_name, column_numbers_to_delete_from_csv=[], column_names_tuple=(), split_char=","):
     source_table_of_tuples = csv_to_list_of_tuples(file_name, column_numbers_to_delete_from_csv, split_char)
-    size = len(column_names_tuple)
     print("inserting... (expected speed: ~100 rows per second)")
 
-    if size > 0:
-        tab_cols = db_table_name + '(' + ",".join(column_names_tuple) + ')'
-        for values in source_table_of_tuples:
-            cursor.execute("""
-                            INSERT INTO {tab_and_cols}
-                            VALUES {values};
-                           """.format(tab_and_cols=tab_cols, values=values))
-    else:
+    if len(source_table_of_tuples[0]) == 0:
         for values in source_table_of_tuples:
             cursor.execute("""
                             INSERT INTO {table}
                             VALUES {values};
                            """.format(table=db_table_name, values=values))
+    elif len(source_table_of_tuples[0]) == 1:
+        tab_cols = db_table_name + '(' + column_names_tuple + ')'
+        for values in source_table_of_tuples:
+            values = "(" + values[0] + ")"
+            cursor.execute("""
+                            INSERT INTO {tab_and_cols}
+                            VALUES {values};
+                           """.format(tab_and_cols=tab_cols, values=values))
+    else:
+        tab_cols = db_table_name + '(' + ",".join(column_names_tuple) + ')'
+        for values in source_table_of_tuples:
+            if len(values) == 1:
+                values = "(" + values[0] + ")"
+                tab_cols = db_table_name + '(' + column_names_tuple + ')'
+            cursor.execute("""
+                                    INSERT INTO {tab_and_cols}
+                                    VALUES {values};
+                                   """.format(tab_and_cols=tab_cols, values=values))
     print("Done :)")
 
+####################### Execute:  #####################################
 
+fulfill_db("/home/mariusz/PycharmProjects/flyerTables/csv_files/crew.csv",
+           "crew",
+           [0],
+           ("first_name", "last_name", "function"))
 
-fulfill_db("/home/mariusz/PycharmProjects/flyerTables/csv_files/constant_relation.csv",
-           "constant_relation",
-           [0, 3],
-           ("from_airport", "destination_airport", "distance"))
