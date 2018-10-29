@@ -98,19 +98,19 @@ create unique index if not exists seats_seat_id_uindex
 create table if not exists routes
 (
 	relation_id bigserial not null
-		constraint constantrelation_pkey
+		constraint routes_pkey
 			primary key,
 	from_airport varchar not null
-		constraint constantrelation_airports_from__fk
+		constraint routes_airports_from__fk
 			references airports (airport_id),
 	destination_airport varchar not null
-		constraint constantrelation_dest___fk
+		constraint routes_dest___fk
 			references airports (airport_id),
 	distance integer
 )
 ;
-create unique index if not exists constantrelation_relationid_uindex
-	on constant_relation (relation_id)
+create unique index if not exists routes_relationid_uindex
+	on routes (relation_id)
 ;
 
 create table if not exists flights
@@ -119,8 +119,8 @@ create table if not exists flights
 		constraint flights_pkey
 			primary key,
 	relation_id bigint not null
-		constraint flights_constant_relation__fk
-			references constant_relation (relation_id),
+		constraint flights_routes__fk
+			references routes (relation_id),
 	plane_id bigint not null,
 	price money,
 	captain_id bigint
@@ -133,6 +133,7 @@ create table if not exists flights
 create unique index if not exists flights_flight_id_uindex
 	on flights (flight_id)
 ;
+
 
 create table if not exists tickets
 (
@@ -157,3 +158,23 @@ create table if not exists tickets
 create unique index if not exists tickets_ticket_id_uindex
 	on tickets (ticket_id)
 ;
+
+COPY airports
+FROM '/home/witek/komputerowiec/codecool/advanced/flights/flyerTables/csv_files/airports.csv' with csv delimiter ',';
+
+COPY users(first_name, last_name, password, email, phone_number, country, city, adress, role)
+FROM '/home/witek/komputerowiec/codecool/advanced/flights/flyerTables/csv_files/users.csv' with csv delimiter ',';
+
+COPY crew(first_name, last_name, function)
+FROM '/home/witek/komputerowiec/codecool/advanced/flights/flyerTables/csv_files/crew.csv' with csv delimiter ',';
+
+COPY passengers(firstname, lastname, email, phone_number)
+FROM '/home/witek/komputerowiec/codecool/advanced/flights/flyerTables/csv_files/passengers.csv' with csv delimiter ',';
+
+COPY planes(seats_amount)
+FROM '/home/witek/komputerowiec/codecool/advanced/flights/flyerTables/csv_files/planes.csv' with csv delimiter ',';
+
+COPY routes(from_airport, destination_airport, distance)
+FROM '/home/witek/komputerowiec/codecool/advanced/flights/flyerTables/csv_files/routes.csv' with csv delimiter ',';
+
+
