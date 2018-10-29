@@ -8,8 +8,8 @@ create table if not exists users
 	first_name varchar,
 	last_name varchar not null,
 	password varchar(255) not null,
-	email varchar(32) not null,
-	phone_number bigint,
+	email varchar(255) not null,
+	phone_number varchar,
 	country varchar,
 	city varchar,
 	adress varchar,
@@ -52,17 +52,13 @@ create table if not exists passengers
 		constraint passengers_pkey
 			primary key,
 	firstname varchar not null,
-	lastname varchar not null,
-	email varchar,
-	phone_number varchar
+	lastname varchar not null
 )
 ;
 create unique index if not exists passengers_passenger_id_uindex
 	on passengers (passenger_id)
 ;
-create unique index if not exists passengers_email_uindex
-	on passengers (email)
-;
+
 
 create table if not exists airports
 (
@@ -162,13 +158,13 @@ create unique index if not exists tickets_ticket_id_uindex
 COPY airports
 FROM '/home/witek/komputerowiec/codecool/advanced/flights/flyerTables/csv_files/airports.csv' with csv delimiter ',';
 
-COPY users(first_name, last_name, password, email, phone_number, country, city, adress, role)
+COPY users(first_name, last_name, email, password, phone_number, country, city, adress, role)
 FROM '/home/witek/komputerowiec/codecool/advanced/flights/flyerTables/csv_files/users.csv' with csv delimiter ',';
 
 COPY crew(first_name, last_name, function)
 FROM '/home/witek/komputerowiec/codecool/advanced/flights/flyerTables/csv_files/crew.csv' with csv delimiter ',';
 
-COPY passengers(firstname, lastname, email, phone_number)
+COPY passengers(firstname, lastname)
 FROM '/home/witek/komputerowiec/codecool/advanced/flights/flyerTables/csv_files/passengers.csv' with csv delimiter ',';
 
 COPY planes(seats_amount)
