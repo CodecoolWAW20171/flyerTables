@@ -42,9 +42,6 @@ def fulfill_db(cursor, file_name, db_table_name, column_numbers_to_delete_from_c
     else:
         tab_cols = db_table_name + '(' + ",".join(column_names_tuple) + ')'
         for values in source_table_of_tuples:
-            if len(values) == 1:
-                values = "(" + values[0] + ")"
-                tab_cols = db_table_name + '(' + column_names_tuple + ')'
             cursor.execute("""
                                     INSERT INTO {tab_and_cols}
                                     VALUES {values};
