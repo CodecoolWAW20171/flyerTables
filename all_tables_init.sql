@@ -165,6 +165,15 @@ DELETE FROM crew;
 DELETE FROM airports;
 DELETE FROM tickets;
 
+ALTER SEQUENCE crew_employee_id_seq RESTART WITH 1;
+ALTER SEQUENCE flights_flight_id_seq RESTART WITH 1;
+ALTER SEQUENCE passengers_passenger_id_seq RESTART WITH 1;
+ALTER SEQUENCE planes_plane_id_seq RESTART WITH 1;
+ALTER SEQUENCE routes_relation_id_seq RESTART WITH 1;
+ALTER SEQUENCE seats_seat_id_seq RESTART WITH 1;
+ALTER SEQUENCE tickets_ticket_id_seq RESTART WITH 1;
+ALTER SEQUENCE users_user_id_seq RESTART WITH 1;
+
 -- creating seats after created plane:
 
 CREATE OR REPLACE FUNCTION create_seats() RETURNS TRIGGER AS $$
