@@ -95,7 +95,7 @@ create unique index if not exists seats_seat_id_uindex
 	on seats (seat_id)
 ;
 
-create table if not exists constant_relation
+create table if not exists routes
 (
 	relation_id bigserial not null
 		constraint constantrelation_pkey
@@ -106,7 +106,6 @@ create table if not exists constant_relation
 	destination_airport varchar not null
 		constraint constantrelation_dest___fk
 			references airports (airport_id),
-	base_price money,
 	distance integer
 )
 ;
@@ -134,23 +133,6 @@ create table if not exists flights
 create unique index if not exists flights_flight_id_uindex
 	on flights (flight_id)
 ;
-
-create table if not exists flight_seats
-(
-	seat_id bigint not null
-		constraint flightseats_pk
-			primary key
-		constraint flight_seats_seats__fk
-			references seats (seat_id),
-	passenger_id bigint
-		constraint flight_seats_pesels__fk
-			references passengers (passenger_id),
-	flight_id bigint not null
-		constraint flight_seats_flights__fk
-			references flights (flight_id)
-)
-;
-CREATE INDEX flightid_index ON flight_seats (flight_id);
 
 create table if not exists tickets
 (
