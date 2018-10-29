@@ -195,8 +195,8 @@ CREATE OR REPLACE FUNCTION flights_time() RETURNS TRIGGER AS $$
      dist integer;
      flight_duration interval;
    BEGIN
-     SELECT distance INTO dist FROM constant_relation
-     WHERE constant_relation.relation_id = new.relation_id;
+     SELECT distance INTO dist FROM routes
+     WHERE routes.relation_id = new.relation_id;
 
      flight_duration := make_interval(hours := (dist / speed));
      new.enddate := new.startdate + flight_duration;
