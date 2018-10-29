@@ -83,7 +83,7 @@ create table if not exists seats
 	seat_number varchar,
 	plane_id bigint
 		constraint planes_planeid_fk
-			references planes (plane_id),
+			references planes (plane_id) on delete cascade,
 	standard varchar
 )
 ;
@@ -98,10 +98,10 @@ create table if not exists routes
 			primary key,
 	from_airport varchar not null
 		constraint routes_airports_from__fk
-			references airports (airport_id),
+			references airports (airport_id) on delete cascade on update cascade,
 	destination_airport varchar not null
 		constraint routes_dest___fk
-			references airports (airport_id),
+			references airports (airport_id) on delete cascade on update cascade,
 	distance integer
 )
 ;
@@ -116,12 +116,12 @@ create table if not exists flights
 			primary key,
 	relation_id bigint not null
 		constraint flights_routes__fk
-			references routes (relation_id),
+			references routes (relation_id) on delete cascade on update cascade,
 	plane_id bigint not null,
 	price money,
 	captain_id bigint
 		constraint crew_employeeid_fk
-			references crew (employee_id),
+			references crew (employee_id) on delete set null on update cascade,
 	startdate timestamp not null,
 	enddate timestamp not null
 )
@@ -138,16 +138,16 @@ create table if not exists tickets
 			primary key,
 	flight_id bigint not null
 		constraint tickets_flights__fk
-			references flights (flight_id),
+			references flights (flight_id) on delete cascade on update cascade ,
 	seat_id bigint not null
 		constraint tickets_seats__fk
-			references seats (seat_id),
+			references seats (seat_id) on delete cascade on update cascade ,
 	user_id bigint not null
     constraint users_userid_fk
-      references users (user_id),
+      references users (user_id) on delete cascade on update cascade,
 	passenger_id bigint not null
 		constraint tickets_passengers__fk
-			references passengers (passenger_id),
+			references passengers (passenger_id) on delete cascade on update cascade,
 	price money
 )
 ;
