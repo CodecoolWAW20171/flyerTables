@@ -1,3 +1,15 @@
+
+DROP TABLE IF EXISTS planes CASCADE;
+DROP TABLE IF EXISTS seats CASCADE;
+DROP TABLE IF EXISTS routes CASCADE;
+DROP TABLE IF EXISTS flights CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS passengers CASCADE;
+DROP TABLE IF EXISTS crew CASCADE;
+DROP TABLE IF EXISTS airports CASCADE;
+DROP TABLE IF EXISTS tickets CASCADE;
+DROP TYPE IF EXISTS role;
+
 CREATE TYPE role AS ENUM ('user', 'manager');
 
 create table if not exists users
@@ -155,25 +167,6 @@ create unique index if not exists tickets_ticket_id_uindex
 	on tickets (ticket_id)
 ;
 -- --------------------------------- TRIGGERS ------------------------------------------------
-DELETE FROM planes;
-DELETE FROM seats;
-DELETE FROM routes;
-DELETE FROM flights;
-DELETE FROM users;
-DELETE FROM passengers;
-DELETE FROM crew;
-DELETE FROM airports;
-DELETE FROM tickets;
-
-ALTER SEQUENCE crew_employee_id_seq RESTART WITH 1;
-ALTER SEQUENCE flights_flight_id_seq RESTART WITH 1;
-ALTER SEQUENCE passengers_passenger_id_seq RESTART WITH 1;
-ALTER SEQUENCE planes_plane_id_seq RESTART WITH 1;
-ALTER SEQUENCE routes_relation_id_seq RESTART WITH 1;
-ALTER SEQUENCE seats_seat_id_seq RESTART WITH 1;
-ALTER SEQUENCE tickets_ticket_id_seq RESTART WITH 1;
-ALTER SEQUENCE users_user_id_seq RESTART WITH 1;
-
 -- creating seats after created plane:
 
 CREATE OR REPLACE FUNCTION create_seats() RETURNS TRIGGER AS $$
@@ -224,19 +217,19 @@ CREATE TRIGGER flights_trigger BEFORE INSERT ON flights
 
 COPY airports
 FROM '/home/mariusz/PycharmProjects/flyerTables/csv_files/airports.csv' with csv delimiter ',';
-
+--
 COPY users(first_name, last_name, email, password, phone_number, country, city, adress, role)
 FROM '/home/mariusz/PycharmProjects/flyerTables/csv_files/users.csv' with csv delimiter ',';
-
+--
 COPY crew(first_name, last_name, function)
 FROM '/home/mariusz/PycharmProjects/flyerTables/csv_files/crew.csv' with csv delimiter ',';
-
+--
 COPY passengers(firstname, lastname)
 FROM '/home/mariusz/PycharmProjects/flyerTables/csv_files/passengers.csv' with csv delimiter ',';
-
+--
 COPY planes(seats_amount)
 FROM '/home/mariusz/PycharmProjects/flyerTables/csv_files/planes.csv' with csv delimiter ',';
-
+--
 COPY routes(from_airport, destination_airport, distance)
 FROM '/home/mariusz/PycharmProjects/flyerTables/csv_files/routes.csv' with csv delimiter ',';
 
