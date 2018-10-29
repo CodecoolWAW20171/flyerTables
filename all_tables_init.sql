@@ -154,23 +154,81 @@ create table if not exists tickets
 create unique index if not exists tickets_ticket_id_uindex
 	on tickets (ticket_id)
 ;
+-- --------------------------------- TRIGGERS ------------------------------------------------
+DELETE FROM planes;
+DELETE FROM seats;
+DELETE FROM routes;
+DELETE FROM flights;
+DELETE FROM users;
+DELETE FROM passengers;
+DELETE FROM crew;
+DELETE FROM airports;
+DELETE FROM tickets;
+
+-- creating seats after created plane:
+
+CREATE OR REPLACE FUNCTION create_seats() RETURNS TRIGGER AS $$
+   DECLARE
+     seats integer;
+   BEGIN
+      seats := new.seats_amount;
+     FOR i in 1..seats LOOP
+      INSERT INTO seats(seat_number, plane_id, standard)
+      VALUES (i, new.plane_id, 'normal');
+     END LOOP ;
+      RETURN NEW;
+   END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS seats_trigger ON planes;
+
+CREATE TRIGGER seats_trigger AFTER INSERT ON planes
+  FOR EACH ROW EXECUTE PROCEDURE create_seats();
+
+-- fill enddate of arrival in flights, calculated by distance from constant_relation:
+
+CREATE OR REPLACE FUNCTION flights_time() RETURNS TRIGGER AS $$
+   DECLARE
+     speed integer := 900;
+     dist integer;
+     flight_duration interval;
+   BEGIN
+     SELECT distance INTO dist FROM constant_relation
+     WHERE constant_relation.relation_id = new.relation_id;
+
+     flight_duration := make_interval(hours := (dist / speed));
+     new.enddate := new.startdate + flight_duration;
+     RAISE NOTICE 'DISTANCE: (%)', dist;
+     RAISE NOTICE 'DURANCE: (%)', flight_duration;
+     RETURN NEW;
+   END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS flights_trigger ON flights;
+
+CREATE TRIGGER flights_trigger BEFORE INSERT ON flights
+  FOR EACH ROW EXECUTE PROCEDURE flights_time();
+
+
+
+-- --------------------------------- FILL FROM CSV -------------------------------------------
 
 COPY airports
-FROM '/home/witek/komputerowiec/codecool/advanced/flights/flyerTables/csv_files/airports.csv' with csv delimiter ',';
+FROM '/home/mariusz/PycharmProjects/flyerTables/csv_files/airports.csv' with csv delimiter ',';
 
 COPY users(first_name, last_name, email, password, phone_number, country, city, adress, role)
-FROM '/home/witek/komputerowiec/codecool/advanced/flights/flyerTables/csv_files/users.csv' with csv delimiter ',';
+FROM '/home/mariusz/PycharmProjects/flyerTables/csv_files/users.csv' with csv delimiter ',';
 
 COPY crew(first_name, last_name, function)
-FROM '/home/witek/komputerowiec/codecool/advanced/flights/flyerTables/csv_files/crew.csv' with csv delimiter ',';
+FROM '/home/mariusz/PycharmProjects/flyerTables/csv_files/crew.csv' with csv delimiter ',';
 
 COPY passengers(firstname, lastname)
-FROM '/home/witek/komputerowiec/codecool/advanced/flights/flyerTables/csv_files/passengers.csv' with csv delimiter ',';
+FROM '/home/mariusz/PycharmProjects/flyerTables/csv_files/passengers.csv' with csv delimiter ',';
 
 COPY planes(seats_amount)
-FROM '/home/witek/komputerowiec/codecool/advanced/flights/flyerTables/csv_files/planes.csv' with csv delimiter ',';
+FROM '/home/mariusz/PycharmProjects/flyerTables/csv_files/planes.csv' with csv delimiter ',';
 
 COPY routes(from_airport, destination_airport, distance)
-FROM '/home/witek/komputerowiec/codecool/advanced/flights/flyerTables/csv_files/routes.csv' with csv delimiter ',';
+FROM '/home/mariusz/PycharmProjects/flyerTables/csv_files/routes.csv' with csv delimiter ',';
 
 
